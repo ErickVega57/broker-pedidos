@@ -82,7 +82,7 @@ mvn -q exec:java -Dexec.mainClass="uady.so.servicios.AppNombreServicio" -Dexec.a
 ```
 En caso de no tenerlo
 ```bash
-./mvnw -q exec:java -Dexec.mainClass="uady.so.cliente.Cliente" -Dexec.args="9001 localhost:9000"
+./mvnw -q exec:java -Dexec.mainClass="uady.so.servicios.AppNombreServicio" -Dexec.args="9001 localhost:9000"
 ```
 
 ### **Ejecutar Cliente**
