@@ -48,7 +48,9 @@ public class ServidorProxy {
                                 socket.getOutputStream(), StandardCharsets.UTF_8
                         );
                         BufferedReader entrada = new BufferedReader(
-                                new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8)
+                            new InputStreamReader(
+                                socket.getInputStream(), StandardCharsets.UTF_8
+                            )
                         );
                 ) {
                     String jsonSolicitud = entrada.readLine();
@@ -57,9 +59,11 @@ public class ServidorProxy {
                             solicitudJsonAdapter.deserializarSolicitudServidor(jsonSolicitud);
 
                     Respuesta respuesta = servicio.ejecutar(solicitudServidor);
-                    System.out.println(solicitudJsonAdapter.serializar(respuesta));
+                    
+                    String jsonRespuesta = solicitudJsonAdapter.serializar(respuesta);
+                    System.out.println(jsonRespuesta);
 
-                    salida.write(solicitudJsonAdapter.serializar(respuesta));
+                    salida.write(jsonRespuesta + "\n");
                     salida.flush();
                 }
             }
