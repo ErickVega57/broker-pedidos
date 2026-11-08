@@ -6,7 +6,6 @@ public class SolicitudBroker extends Solicitud {
      *  - Listar
      *  - Registrar
      *  - Buscar
-     *  - Ejecutar
      */
 
     protected SolicitudBroker(String nombreServicio) {
