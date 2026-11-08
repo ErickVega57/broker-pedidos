@@ -7,6 +7,7 @@ import uady.so.mensajes.solicitud.SolicitudBrokerPedidos;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
+// clase para transformar un json a Objeto SolicitudBroker
 public class SolicitudBrokerDeserializador implements JsonDeserializer<SolicitudBroker> {
 
     @Override
