@@ -43,6 +43,8 @@ public class ServicioRegistrarPedido implements Servicio{
             return respuesta;
         } catch (PedidoException e){
             respuesta = Respuesta.respuestaERROR("registrarPedido", e.getMessage());
+        } catch (RuntimeException e){
+            respuesta = Respuesta.respuestaERROR("registrarPedido", e.getMessage());
         }
         return respuesta;
     }

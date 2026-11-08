@@ -84,6 +84,7 @@ public class Broker {
                     // buscamos el servicio solicitado para obtener los datos
                     // si no se encuentra envia excepcion ServicoNoEncontrado
                     DatosServicio servicio = buscarServicio((SolicitudBrokerPedidos)solicitudBroker);
+
                     
                     // invocamos el servicio y esperamos la respuesta.
                     Respuesta respuestaServicio = invocar(servicio, (SolicitudBrokerPedidos) solicitudBroker);
@@ -165,6 +166,8 @@ public class Broker {
 
     private Respuesta buscar(SolicitudBroker solicitudBroker) {
         // creamos la respuesta OK.
+        System.out.println("buscando servicio " + solicitudBroker.getServicioBuscado());
+
         Respuesta respuesta = Respuesta.respuestaOK(solicitudBroker.getSolicitudTipo());
 
 
@@ -203,6 +206,7 @@ public class Broker {
     // método para invocar a un servicio y obtener la respuesta.
     private Respuesta invocar(DatosServicio servicio, SolicitudBrokerPedidos solicitudBroker){
         // iniciamos la conexion con el servicio.
+
         try(
                 Socket socket = new Socket(servicio.getHost(), servicio.getPuerto());
                 OutputStreamWriter salida = new OutputStreamWriter(
@@ -219,10 +223,11 @@ public class Broker {
                 solicitudServidor = SolicitudServidor.consultarPedido(solicitudBroker.getId());
 
             } else if (Objects.equals(servicio.getNombreServicio(), "registrarPedido")){
+
                 solicitudServidor = SolicitudServidor.registrarPedido(solicitudBroker.getCliente());
 
                 // agregamos los productos de la solicitud del broker a la del servicio
-                for(LinkedHashMap<String, Object> producto : solicitudServidor.getProductos()){
+                for(LinkedHashMap<String, Object> producto : solicitudBroker.getProductos()){
                     solicitudServidor.agregarProducto(
                             (String) producto.get("nombre"),
                             (double) producto.get("precio"),
@@ -230,12 +235,14 @@ public class Broker {
                             (int) producto.get("existencia")
                     );
                 }
+
             } else{
                 // ultimo caso listar pedidos
                 solicitudServidor = SolicitudServidor.listarPedidos();
             }
             // la solicitudServidor la volvemos String json y la enviamos.
             String jsonSolicitud = solicitudJsonAdapter.serializar(solicitudServidor);
+            System.out.println("solicitud enviada al servicio: " + jsonSolicitud);
             salida.write(jsonSolicitud + "\n");
             salida.flush();
 

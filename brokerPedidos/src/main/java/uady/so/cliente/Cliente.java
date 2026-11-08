@@ -32,5 +32,20 @@ public class Cliente {
         System.out.println(jsonRespuesta);
         System.out.println(jsonRespuesta2);
         System.out.println(jsonRespuesta3);
+
+
+        // probar flujo registrar pedido y consultarlo
+        SolicitudBrokerPedidos registrarPedido = SolicitudBrokerPedidos.registarPedido("Erick");
+        registrarPedido.agregarProducto(
+                "cepillo",
+                35.50,
+                3,
+                10
+        );
+        String respuestaRegistrar = proxy.invocar(registrarPedido);
+
+
+        System.out.println("RESPUESTA DEL REGISTRO");
+        System.out.println(respuestaRegistrar);
     }
 }

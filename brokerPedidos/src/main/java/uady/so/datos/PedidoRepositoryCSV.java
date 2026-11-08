@@ -25,12 +25,9 @@ public class PedidoRepositoryCSV implements PedidoRepository {
 
     @Override
     public Pedido consultar(int id) throws PedidoNoEncontrado {
-        System.out.println("ENTRE");
+
         List<Pedido> pedidos = obtenerTodos();
         int indice = id - 1;
-
-        System.out.println(pedidos.size());
-        System.out.println(indice);
 
         if (indice >= 0 && indice < pedidos.size()){
             return pedidos.get(indice);
