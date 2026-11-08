@@ -8,6 +8,11 @@ import uady.so.mensajes.solicitud.SolicitudServidor;
 
 import java.lang.reflect.Type;
 
+
+/* Clase que Serializa y Deserializa solicitudes y respuestas
+ * Convierte en formato json 
+ *
+ */
 public class SolicitudJsonAdapter {
 
     private final Gson gson;
@@ -26,9 +31,15 @@ public class SolicitudJsonAdapter {
 
     public String serializar(Respuesta respuesta){
 
+        // serializamos directamente la respuesta
         String json = gson.toJson(respuesta.getData());
+        // volvemos el String un jsonObject.
         JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject();
 
+        /* el siguiente bloque de codigo revisa si se tienen las claves
+         * id, cantidad, existencia para volverlos enteros como se establece
+         * en el protocolo de comunucacion.
+         */ 
         if (jsonObject.has("resultado")) {
             JsonElement resultadoElement = jsonObject.get("resultado");
 
