@@ -45,24 +45,28 @@ public class ServidorProxy {
                 try (
                         Socket socket = servidor.accept();
                         OutputStreamWriter salida = new OutputStreamWriter(
-                                socket.getOutputStream(), StandardCharsets.UTF_8
-                        );
+                                socket.getOutputStream(), StandardCharsets.UTF_8);
                         BufferedReader entrada = new BufferedReader(
                             new InputStreamReader(
-                                socket.getInputStream(), StandardCharsets.UTF_8
-                            )
-                        );
+                                socket.getInputStream(), StandardCharsets.UTF_8));
                 ) {
+                    // leemos el string en formato json recibido.
                     String jsonSolicitud = entrada.readLine();
-                    System.out.println(jsonSolicitud);
+                    System.out.println("Solicitud recibida\n" + jsonSolicitud);
+
+                    // volvemos el String un objeto solicitud para mejorar el manejo
                     SolicitudServidor solicitudServidor =
                             solicitudJsonAdapter.deserializarSolicitudServidor(jsonSolicitud);
 
-                    Respuesta respuesta = servicio.ejecutar(solicitudServidor);
-                    
-                    String jsonRespuesta = solicitudJsonAdapter.serializar(respuesta);
-                    System.out.println(jsonRespuesta);
+                    // le mandamos la solicitud al servicio para obtener una respuesta
+                    Respuesta respuestaServicio = servicio.ejecutar(solicitudServidor);
 
+                    // la respuesta del servicio la volvemos un StringJson
+                    String jsonRespuestaServicio = 
+                        solicitudJsonAdapter.serializar(respuestaServicio);
+                    System.out.println(jsonRespuestaServicio);
+
+                    // enviamos la respuesta al cliente conectado.
                     salida.write(jsonRespuesta + "\n");
                     salida.flush();
                 }
@@ -70,33 +74,34 @@ public class ServidorProxy {
         }catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void registrarEnBroker() {
+        // creamos la solicitud para registrar el servicio en el broker
         SolicitudBroker solicitudRegistro =
                 SolicitudBroker.SolicitudRegistrar(
-                nombreServicio,
-                hostSerivicio,
-                puertoServicio
-        );
+                    nombreServicio,
+                    hostSerivicio,
+                    puertoServicio
+                );
         try(
                 Socket socket = new Socket(hostBroker, puertoBroker);
                 OutputStreamWriter salida = new OutputStreamWriter(
-                        socket.getOutputStream(), StandardCharsets.UTF_8
-                );
+                        socket.getOutputStream(), StandardCharsets.UTF_8);
                 BufferedReader entrada = new BufferedReader(
-                        new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8)
-                );
+                        new InputStreamReader(
+                            socket.getInputStream(), StandardCharsets.UTF_8));
         ){
+            // volvemos la solicitud de registro a StrinJson
             String jsonSolicitud = solicitudJsonAdapter.serializar(solicitudRegistro);
 
+            // enviamos
             salida.write(jsonSolicitud + "\n");
             salida.flush();
 
+            // leemos la respuesta recibida
             String jsonRespuesta = entrada.readLine();
             System.out.println(jsonRespuesta);
-
 
         } catch (Exception e){
             Respuesta respuesta = Respuesta.respuestaERROR(
