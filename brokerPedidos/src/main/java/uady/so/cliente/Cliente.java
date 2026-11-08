@@ -6,6 +6,9 @@ import uady.so.modelo.Pedido;
 
 public class Cliente {
     public static void main(String[] args) {
+        
+        // iniciamos el proxy creamos solicitudes, las enviamos al broker 
+        // y recibimos respuestas con el metodo invocar del proxy.
         ClienteProxy proxy = new ClienteProxy("localhost", 9000);
 
         SolicitudBroker solicitudBroker = SolicitudBroker.SolicitudListarTodos();
