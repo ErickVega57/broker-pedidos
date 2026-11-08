@@ -5,16 +5,23 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class SolicitudBrokerPedidos extends SolicitudBroker{
-    /*
+ /*
      * Solicitudes de Pedidos al broker:
      *  - RegistrarPedido
      *  - ConsultarPedido
      *  - ListarPedidos
+     * Los metodos estaticos de la clase proporcionan una interfaz para 
+     * crear solicitudes con las estructuras basicas de los servicios
+     * solicitados por dicha solicitud
      */
+
+public class SolicitudBrokerPedidos extends SolicitudBroker{
+
+    // argumentos que recibira para ejecutar el servicio
     private final LinkedHashMap<String,Object> args;
 
     private SolicitudBrokerPedidos(String nombreServicio) {
+        // las solicitudes a servicios son tipo "ejecutar"
         super("ejecutar");
         this.args = new LinkedHashMap<>();
 
@@ -32,6 +39,7 @@ public class SolicitudBrokerPedidos extends SolicitudBroker{
         return solicitudBrokerPedidos;
     }
 
+    
     public static SolicitudBrokerPedidos registarPedido(String cliente){
         SolicitudBrokerPedidos solicitudBrokerPedidos
                 = new SolicitudBrokerPedidos("registrarPedido");
