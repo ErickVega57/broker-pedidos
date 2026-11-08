@@ -5,6 +5,7 @@ import uady.so.mensajes.solicitud.SolicitudServidor;
 
 import java.lang.reflect.Type;
 
+// clase para deserializar un json y transformarlo a SolicitudServidor
 public class SolicitudServidorDeserializador implements JsonDeserializer<SolicitudServidor> {
 
     @Override
