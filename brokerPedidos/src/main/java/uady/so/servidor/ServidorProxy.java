@@ -67,7 +67,7 @@ public class ServidorProxy {
                     System.out.println(jsonRespuestaServicio);
 
                     // enviamos la respuesta al cliente conectado.
-                    salida.write(jsonRespuesta + "\n");
+                    salida.write(jsonRespuestaServicio + "\n");
                     salida.flush();
                 }
             }

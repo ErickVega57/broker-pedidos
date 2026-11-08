@@ -241,7 +241,7 @@ public class Broker {
 
             // recibimos la respuesta
             String jsonRecibido = entrada.readLine();
-            System.out.println("respuesta "jsonRecibido);
+            System.out.println("respuesta " + jsonRecibido);
 
             // devolvemos la respuesta como objeto.
             return solicitudJsonAdapter.deserializarRespuesta(jsonRecibido);
@@ -257,6 +257,13 @@ public class Broker {
 
     public static void main(String[] args) {
         // broker se inicia en escucha en el puerto 9000
-        new Broker(9000).iniciar();
+        // por defecto
+        int puertoBroker = 9000;
+
+        if(args.length != 0){
+            puertoBroker = Integer.parseInt(args[0]);
+        }
+
+        new Broker(puertoBroker).iniciar();
     }
 }

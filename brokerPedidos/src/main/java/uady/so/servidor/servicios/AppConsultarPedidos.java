@@ -6,15 +6,29 @@ import uady.so.servidor.ServidorProxy;
 
 public class AppConsultarPedidos {
     public static void main(String[] args) {
+
+        int puertoServicio = 9001;
+
+        String hostBroker = "localhost";
+        int puertoBroker = 9000;
+
+        if(args.length != 0){
+            puertoServicio = Integer.parseInt(args[0]);
+            String[] partes = args[1].split(":");
+
+            hostBroker = partes[0];
+            puertoBroker = Integer.parseInt(partes[1]);
+        }
         
         PedidoRepositoryCSV pedidoRepository = new PedidoRepositoryCSV();
         ServicioConsultarPedido consultarPedido = new ServicioConsultarPedido(pedidoRepository);
         
         // se crea el proxy con el servicio implementado.
         ServidorProxy proxy = new ServidorProxy(
-          "consultarPedido", "localhost", 9000,
-                "localhost", 9001, consultarPedido
+          "consultarPedido", hostBroker, puertoBroker,
+                "localhost", puertoServicio, consultarPedido
         );
+
         proxy.iniciar();
     }
 }
