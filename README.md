@@ -62,6 +62,11 @@ En caso de no tenerlo
 
 Para ejecutar el cliente se necestian los parámetros `puertoServicio hostBroker:puertoBroker`
 
+Los nombres de los servicios actuales son:
+- `registrarPedido`
+- `consultarPedido`
+- `listarPedidos`
+
 ejemplo `9001 localhost:9000`
 
 **Windows**
