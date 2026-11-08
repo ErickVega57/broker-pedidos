@@ -3,15 +3,17 @@ package uady.so.mensajes.solicitud;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+ /*
+  * Clase para crear solicitudes basicas que recibe el servidor
+  * Solicitudes al servidor:
+  *  - ListarPedidos
+  *  - consultarPedidos
+  *  - registrarPedido
+  *  
+  */
+
 public class SolicitudServidor extends Solicitud {
 
-    /*
-     * Solicitudes al servidor:
-     *  - ListarPedidos
-     *  - consultarPedidos
-     *  - registrarPedido
-     *  -
-     */
     protected SolicitudServidor(String nombreServicio) {
         super(nombreServicio);
     }
