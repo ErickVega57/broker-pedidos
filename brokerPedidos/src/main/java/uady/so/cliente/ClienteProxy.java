@@ -19,7 +19,9 @@ public class ClienteProxy {
         this.puertoBroker = puertoBroker;
     }
 
+    // método para invocar al broker recibir una respuesta.
     public String invocar(SolicitudBroker solicitudBroker){
+        // inicia conexión
         try(
                 Socket socket = new Socket(hostBroker, puertoBroker);
                 OutputStreamWriter salida = new OutputStreamWriter(
@@ -29,11 +31,13 @@ public class ClienteProxy {
                         new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8)
                 );
         ){
+            // volvemos la solicitud String json y enviamos
             String jsonSolicitud = solicitudJsonAdapter.serializar(solicitudBroker);
-
+    
             salida.write(jsonSolicitud + "\n");
             salida.flush();
 
+            // retornamos la respuesta
             return entrada.readLine();
 
         } catch (Exception e){
