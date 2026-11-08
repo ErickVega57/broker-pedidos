@@ -45,13 +45,10 @@ public class SolicitudJsonAdapter {
 
             if (resultadoElement.isJsonObject()) {
                 JsonObject resultado = resultadoElement.getAsJsonObject();
-
-
+                
                 if (resultado.has("id")) {
                     resultado.addProperty("id", resultado.get("id").getAsInt());
                 }
-
-
                 if ((resultado.has("productos") && resultado.get("productos").isJsonArray()) ||
                         (
                                 resultado.has("respuesta") &&
@@ -71,13 +68,12 @@ public class SolicitudJsonAdapter {
                         }
                     }
 
-
-                    // 3. Recorremos cada producto del arreglo
+                    // recorremos cada producto del arreglo
                     for (JsonElement element : productos) {
                         if (element.isJsonObject()) {
                             JsonObject producto = element.getAsJsonObject();
 
-                            // 4. Sobreescribimos las propiedades que queremos forzar a enteros
+                            // sobreescribimos las propiedades que queremos forzar a enteros
                             if (producto.has("cantidad")) {
                                 // Lee el número original (ej. 4.0) y lo guarda estrictamente como int (4)
                                 producto.addProperty("cantidad", producto.get("cantidad").getAsInt());
@@ -85,11 +81,6 @@ public class SolicitudJsonAdapter {
 
                             if (producto.has("existencia")) {
                                 producto.addProperty("existencia", producto.get("existencia").getAsInt());
-                            }
-
-                            // Si tus productos tuvieran un ID interno
-                            if (producto.has("id")) {
-                                producto.addProperty("id", producto.get("id").getAsInt());
                             }
                         }
                     }
