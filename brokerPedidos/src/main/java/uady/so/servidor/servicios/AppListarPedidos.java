@@ -22,7 +22,7 @@ public class AppListarPedidos {
         // se crea el proxy con el servicio implementado.
         ServidorProxy proxy = new ServidorProxy(
                 "listarPedidos", hostBroker, puertoBroker,
-                "192.168.1.204", puertoServicio, listarPedidos
+                "localhost", puertoServicio, listarPedidos
         );
         proxy.iniciar();
     }
