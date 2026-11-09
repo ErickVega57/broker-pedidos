@@ -4,6 +4,9 @@ import uady.so.datos.PedidoRepository;
 import uady.so.datos.PedidoRepositoryCSV;
 import uady.so.servidor.ServidorProxy;
 
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
 public class AppConsultarPedidos {
     public static void main(String[] args) {
 
@@ -22,11 +25,11 @@ public class AppConsultarPedidos {
         
         PedidoRepositoryCSV pedidoRepository = new PedidoRepositoryCSV();
         ServicioConsultarPedido consultarPedido = new ServicioConsultarPedido(pedidoRepository);
-        
+
         // se crea el proxy con el servicio implementado.
         ServidorProxy proxy = new ServidorProxy(
           "consultarPedido", hostBroker, puertoBroker,
-                "localhost", puertoServicio, consultarPedido
+                "192.168.1.204", puertoServicio, consultarPedido
         );
 
         proxy.iniciar();
