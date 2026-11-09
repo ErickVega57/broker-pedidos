@@ -1,8 +1,5 @@
 package uady.so.servidor.servicios;
 
-import uady.so.datos.PedidoRepository;
-import uady.so.datos.PedidoRepositoryCSV;
-import uady.so.modelo.MVC.RegistrarPedido;
 import uady.so.servidor.ServidorProxy;
 
 public class AppListarPedidos {
