@@ -1,7 +1,7 @@
 package uady.so.broker;
 
 import uady.so.excepciones.ServicioNoEncontrado;
-import uady.so.json.SolicitudJsonAdapter;
+import uady.so.json.MensajesJsonAdapter;
 import uady.so.mensajes.respuesta.Respuesta;
 import uady.so.mensajes.solicitud.SolicitudBroker;
 import uady.so.mensajes.solicitud.SolicitudBrokerPedidos;
@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Broker {
-    private final SolicitudJsonAdapter solicitudJsonAdapter = new SolicitudJsonAdapter();
+    private final MensajesJsonAdapter mensajesJsonAdapter = new MensajesJsonAdapter();
     private int puerto;
 
     private Map<Integer, DatosServicio>  servicios = new ConcurrentHashMap<>();
@@ -62,7 +62,7 @@ public class Broker {
             System.out.println(jsonSolicitud);
 
             // la solicitud se vuelve un objeto.
-            SolicitudBroker solicitudBroker = solicitudJsonAdapter.deserializarSolicitudBroker(jsonSolicitud);
+            SolicitudBroker solicitudBroker = mensajesJsonAdapter.deserializarSolicitudBroker(jsonSolicitud);
 
             // creamos una respuesta a la que le asignaremos valor segun el caso
             Respuesta respuesta;
@@ -89,7 +89,7 @@ public class Broker {
                     // invocamos el servicio y esperamos la respuesta.
                     Respuesta respuestaServicio = invocar(servicio, (SolicitudBrokerPedidos) solicitudBroker);
 
-                    System.out.println("REVISION:\n" + solicitudJsonAdapter.serializar(respuestaServicio));
+                    System.out.println("REVISION:\n" + mensajesJsonAdapter.serializar(respuestaServicio));
 
                     // creamos la respuesta para el cliente segun la respuesta del servicio
                     if(respuestaServicio.getEstado().equals("OK")){
@@ -106,7 +106,7 @@ public class Broker {
                 }
             }
             // volvemos String formato Json la respuesta.
-            String jsonRespuesta = solicitudJsonAdapter.serializar(respuesta);
+            String jsonRespuesta = mensajesJsonAdapter.serializar(respuesta);
             // enviamos al socket(cliente o broker) conectado la respuesta
             salida.write(jsonRespuesta + "\n");
             salida.flush();
@@ -242,7 +242,7 @@ public class Broker {
                 solicitudServidor = SolicitudServidor.listarPedidos();
             }
             // la solicitudServidor la volvemos String json y la enviamos.
-            String jsonSolicitud = solicitudJsonAdapter.serializar(solicitudServidor);
+            String jsonSolicitud = mensajesJsonAdapter.serializar(solicitudServidor);
             System.out.println("solicitud enviada al servicio: " + jsonSolicitud);
             salida.write(jsonSolicitud + "\n");
             salida.flush();
@@ -252,7 +252,7 @@ public class Broker {
             System.out.println("respuesta =" + jsonRecibido);
 
             // devolvemos la respuesta como objeto.
-            return solicitudJsonAdapter.deserializarRespuesta(jsonRecibido);
+            return mensajesJsonAdapter.deserializarRespuesta(jsonRecibido);
 
         } catch (Exception e) {
             // error al iniciar la conexion con el servicio.

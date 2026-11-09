@@ -1,6 +1,6 @@
 package uady.so.cliente;
 
-import uady.so.json.SolicitudJsonAdapter;
+import uady.so.json.MensajesJsonAdapter;
 import uady.so.mensajes.respuesta.Respuesta;
 import uady.so.mensajes.solicitud.SolicitudBroker;
 
@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ClienteProxy {
 
-    private final SolicitudJsonAdapter solicitudJsonAdapter = new SolicitudJsonAdapter();
+    private final MensajesJsonAdapter mensajesJsonAdapter = new MensajesJsonAdapter();
     private final String hostBroker;
     private final int puertoBroker;
 
@@ -32,7 +32,7 @@ public class ClienteProxy {
                 );
         ){
             // volvemos la solicitud String json y enviamos
-            String jsonSolicitud = solicitudJsonAdapter.serializar(solicitudBroker);
+            String jsonSolicitud = mensajesJsonAdapter.serializar(solicitudBroker);
     
             salida.write(jsonSolicitud + "\n");
             salida.flush();
@@ -45,7 +45,7 @@ public class ClienteProxy {
                     "ejecutar",
                     "No fue posible posible conectarse al broker"
             );
-            return solicitudJsonAdapter.serializar(respuesta);
+            return mensajesJsonAdapter.serializar(respuesta);
         }
     }
 }

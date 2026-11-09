@@ -1,6 +1,6 @@
 package uady.so.servidor.servicios;
 
-import uady.so.json.SolicitudJsonAdapter;
+import uady.so.json.MensajesJsonAdapter;
 import uady.so.mensajes.respuesta.Respuesta;
 import uady.so.mensajes.solicitud.SolicitudServidor;
 import uady.so.datos.PedidoRepository;
@@ -70,7 +70,7 @@ public class ServicioListarPedidos implements Servicio {
     public static void main(String[] args) {
         ServicioListarPedidos servicio = new ServicioListarPedidos();
 
-        SolicitudJsonAdapter jsonAdapter = new SolicitudJsonAdapter();
+        MensajesJsonAdapter jsonAdapter = new MensajesJsonAdapter();
         System.out.println(jsonAdapter.serializar(servicio.ejecutar(SolicitudServidor.listarPedidos())));
     }
 

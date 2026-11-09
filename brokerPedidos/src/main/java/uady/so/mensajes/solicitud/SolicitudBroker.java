@@ -30,6 +30,15 @@ public class SolicitudBroker extends Solicitud {
         return solicitudBroker;
     }
 
+    public static SolicitudBroker SolicitudEjecutar(String servicioObjetivo, Object argumentos){
+        SolicitudBroker solicitud = new SolicitudBroker("ejecutar");
+        solicitud.agregarParametro("servicio", servicioObjetivo);
+        if(argumentos != null) {
+            solicitud.agregarParametro("argumentos", argumentos);
+        }
+        return solicitud;
+    }
+
     public String getServicioBuscado(){
         return (String) getParametro("buscar");
     }

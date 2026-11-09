@@ -1,6 +1,6 @@
 package uady.so.servidor;
 
-import uady.so.json.SolicitudJsonAdapter;
+import uady.so.json.MensajesJsonAdapter;
 import uady.so.mensajes.respuesta.Respuesta;
 import uady.so.mensajes.solicitud.SolicitudBroker;
 import uady.so.mensajes.solicitud.SolicitudServidor;
@@ -14,7 +14,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class ServidorProxy {
-    private final SolicitudJsonAdapter solicitudJsonAdapter = new SolicitudJsonAdapter();
+    private final MensajesJsonAdapter mensajesJsonAdapter = new MensajesJsonAdapter();
 
     private final String nombreServicio;
     private final String hostBroker;
@@ -56,14 +56,14 @@ public class ServidorProxy {
 
                     // volvemos el String un objeto solicitud para mejorar el manejo
                     SolicitudServidor solicitudServidor =
-                            solicitudJsonAdapter.deserializarSolicitudServidor(jsonSolicitud);
+                            mensajesJsonAdapter.deserializarSolicitudServidor(jsonSolicitud);
 
                     // le mandamos la solicitud al servicio para obtener una respuesta
                     Respuesta respuestaServicio = servicio.ejecutar(solicitudServidor);
 
                     // la respuesta del servicio la volvemos un StringJson
                     String jsonRespuestaServicio = 
-                        solicitudJsonAdapter.serializar(respuestaServicio);
+                        mensajesJsonAdapter.serializar(respuestaServicio);
                     System.out.println("Respuesta:\n" + jsonRespuestaServicio);
 
                     // enviamos la respuesta al cliente conectado.
@@ -93,7 +93,7 @@ public class ServidorProxy {
                             socket.getInputStream(), StandardCharsets.UTF_8));
         ){
             // volvemos la solicitud de registro a StrinJson
-            String jsonSolicitud = solicitudJsonAdapter.serializar(solicitudRegistro);
+            String jsonSolicitud = mensajesJsonAdapter.serializar(solicitudRegistro);
 
             // enviamos
             salida.write(jsonSolicitud + "\n");
@@ -108,7 +108,7 @@ public class ServidorProxy {
                     "registrar",
                     "No se pudo registrar " + nombreServicio + " al broker " + e.getMessage()
             );
-            System.out.println(solicitudJsonAdapter.serializar(respuesta));
+            System.out.println(mensajesJsonAdapter.serializar(respuesta));
         }
     }
 }

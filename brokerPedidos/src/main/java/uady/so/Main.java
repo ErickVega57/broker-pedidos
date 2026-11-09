@@ -1,7 +1,7 @@
 package uady.so;
 
 import uady.so.datos.PedidoRepositoryCSV;
-import uady.so.json.SolicitudJsonAdapter;
+import uady.so.json.MensajesJsonAdapter;
 import uady.so.mensajes.respuesta.Respuesta;
 import uady.so.mensajes.solicitud.SolicitudBrokerPedidos;
 import uady.so.mensajes.solicitud.SolicitudBroker;
@@ -17,7 +17,7 @@ import java.util.Map;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        SolicitudJsonAdapter solicitudJsonAdapter = new SolicitudJsonAdapter();
+        MensajesJsonAdapter mensajesJsonAdapter = new MensajesJsonAdapter();
 
         SolicitudBroker listarTodos =
                 SolicitudBroker.SolicitudListarTodos();
@@ -30,9 +30,9 @@ public class Main {
                         9001
                 );
 
-        System.out.println(solicitudJsonAdapter.serializar(listarTodos));
-        System.out.println(solicitudJsonAdapter.serializar(buscar));
-        System.out.println(solicitudJsonAdapter.serializar(registrar));
+        System.out.println(mensajesJsonAdapter.serializar(listarTodos));
+        System.out.println(mensajesJsonAdapter.serializar(buscar));
+        System.out.println(mensajesJsonAdapter.serializar(registrar));
 
         SolicitudBrokerPedidos registrarPedido = SolicitudBrokerPedidos.registarPedido("Erick");
         registrarPedido.agregarProducto(
@@ -45,9 +45,9 @@ public class Main {
         SolicitudBrokerPedidos consultarPedido = SolicitudBrokerPedidos.consultarPedido(1);
         SolicitudBrokerPedidos listarPedidos = SolicitudBrokerPedidos.listarPedidos();
 
-        System.out.println(solicitudJsonAdapter.serializar(registrarPedido));
-        System.out.println(solicitudJsonAdapter.serializar(consultarPedido));
-        System.out.println(solicitudJsonAdapter.serializar(listarPedidos));
+        System.out.println(mensajesJsonAdapter.serializar(registrarPedido));
+        System.out.println(mensajesJsonAdapter.serializar(consultarPedido));
+        System.out.println(mensajesJsonAdapter.serializar(listarPedidos));
 
 
         Respuesta respuestaError = Respuesta.respuestaERROR(
@@ -57,38 +57,38 @@ public class Main {
 
         Respuesta respuestaOk = Respuesta.respuestaOK("nombreServicio");
 
-        System.out.println(solicitudJsonAdapter.serializar(respuestaError));
-        System.out.println(solicitudJsonAdapter.serializar(respuestaOk));
+        System.out.println(mensajesJsonAdapter.serializar(respuestaError));
+        System.out.println(mensajesJsonAdapter.serializar(respuestaOk));
 
         System.out.println("==    DESERIALIZACION     ==");
 
         SolicitudBroker solicitudBroker = SolicitudBroker.SolicitudBuscar("Consultar");
-        String jsonPrueba = solicitudJsonAdapter.serializar(solicitudBroker);
+        String jsonPrueba = mensajesJsonAdapter.serializar(solicitudBroker);
 
-        SolicitudBroker solicitudBroker1 = solicitudJsonAdapter.deserializarSolicitudBroker(jsonPrueba);
+        SolicitudBroker solicitudBroker1 = mensajesJsonAdapter.deserializarSolicitudBroker(jsonPrueba);
         System.out.println(solicitudBroker1.getSolicitudTipo());
         System.out.println(solicitudBroker1.getServicioBuscado());
-        System.out.println(solicitudJsonAdapter.serializar(solicitudBroker1));
+        System.out.println(mensajesJsonAdapter.serializar(solicitudBroker1));
 
-        String jsonListar = solicitudJsonAdapter.serializar(listarPedidos);
-        SolicitudBroker solicitudBroker2 = solicitudJsonAdapter.deserializarSolicitudBroker(jsonListar);
+        String jsonListar = mensajesJsonAdapter.serializar(listarPedidos);
+        SolicitudBroker solicitudBroker2 = mensajesJsonAdapter.deserializarSolicitudBroker(jsonListar);
         System.out.println(solicitudBroker2.getSolicitudTipo());
         System.out.println(solicitudBroker2.getServicioBuscado());
-        System.out.println(solicitudJsonAdapter.serializar(solicitudBroker2));
+        System.out.println(mensajesJsonAdapter.serializar(solicitudBroker2));
 
-        String jsonRegistrar = solicitudJsonAdapter.serializar(registrar);
-        SolicitudBroker solicitudBroker3 = solicitudJsonAdapter.deserializarSolicitudBroker(jsonRegistrar);
+        String jsonRegistrar = mensajesJsonAdapter.serializar(registrar);
+        SolicitudBroker solicitudBroker3 = mensajesJsonAdapter.deserializarSolicitudBroker(jsonRegistrar);
         System.out.println(solicitudBroker3.getSolicitudTipo());
         System.out.println(solicitudBroker3.getNombreServicio());
         System.out.println(solicitudBroker3.getIp());
         System.out.println(solicitudBroker3.getPuerto());
-        System.out.println(solicitudJsonAdapter.serializar(solicitudBroker3));
+        System.out.println(mensajesJsonAdapter.serializar(solicitudBroker3));
 
-        String jsonRegistrarPedido = solicitudJsonAdapter.serializar(registrarPedido);
+        String jsonRegistrarPedido = mensajesJsonAdapter.serializar(registrarPedido);
 
         // registrar pedido
         SolicitudBrokerPedidos solicitudBroker4 =
-                (SolicitudBrokerPedidos) solicitudJsonAdapter.deserializarSolicitudBroker(jsonRegistrarPedido);
+                (SolicitudBrokerPedidos) mensajesJsonAdapter.deserializarSolicitudBroker(jsonRegistrarPedido);
 
         System.out.println(jsonRegistrarPedido);
         System.out.println(solicitudBroker4.getSolicitudTipo());
@@ -112,7 +112,7 @@ public class Main {
         }
 
         String jsonresp = "{\"servicio\":\"consultarPedido\",\"estado\":\"ERROR\",\"mensaje\":\"No se ha encontrado el pedido\"}";
-        Respuesta respuesta = solicitudJsonAdapter.deserializarRespuesta(jsonresp);
+        Respuesta respuesta = mensajesJsonAdapter.deserializarRespuesta(jsonresp);
 
 
         List<Producto> productosLista = List.of(
