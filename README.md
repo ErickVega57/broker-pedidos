@@ -71,18 +71,18 @@ ejemplo `9001 localhost:9000`
 
 **Windows**
 ```bash
-.\mvnw.cmd -q exec:java -Dexec.mainClass="uady.so.servicios.AppNombreServicio" -Dexec.args="9001 localhost:9000"
+.\mvnw.cmd -q exec:java -Dexec.mainClass="uady.so.servidor.servicios.AppNombreServicio" -Dexec.args="9001 localhost:9000"
 ```
 
 **Linux/MacOs**
 
 Si tienes mvn instalado en tu sistema.
 ```bash
-mvn -q exec:java -Dexec.mainClass="uady.so.servicios.AppNombreServicio" -Dexec.args="9001 localhost:9000"
+mvn -q exec:java -Dexec.mainClass="uady.so.servidor.servicios.AppNombreServicio" -Dexec.args="9001 localhost:9000"
 ```
 En caso de no tenerlo
 ```bash
-./mvnw -q exec:java -Dexec.mainClass="uady.so.servicios.AppNombreServicio" -Dexec.args="9001 localhost:9000"
+./mvnw -q exec:java -Dexec.mainClass="uady.so.servidor.servicios.AppNombreServicio" -Dexec.args="9001 localhost:9000"
 ```
 
 ### **Ejecutar Cliente**
