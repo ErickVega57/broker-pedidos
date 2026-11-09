@@ -64,7 +64,7 @@ public class ServidorProxy {
                     // la respuesta del servicio la volvemos un StringJson
                     String jsonRespuestaServicio = 
                         solicitudJsonAdapter.serializar(respuestaServicio);
-                    System.out.println(jsonRespuestaServicio);
+                    System.out.println("Respuesta:\n" + jsonRespuestaServicio);
 
                     // enviamos la respuesta al cliente conectado.
                     salida.write(jsonRespuestaServicio + "\n");

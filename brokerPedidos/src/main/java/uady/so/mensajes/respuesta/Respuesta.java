@@ -30,8 +30,7 @@ public class Respuesta {
         Respuesta respuesta = new Respuesta("ejecutar", EstadoRespuesta.OK);
         respuesta.agregarResultados();
         respuesta.agregarResultado("servicio", respuestaServicio.getServicio());
-        respuesta.agregarResultado("respuesta", respuestaServicio.resultados);
-
+        respuesta.agregarResultado("respuesta", respuestaServicio.getResultados());
         return respuesta;
     }
 
@@ -76,5 +75,9 @@ public class Respuesta {
 
     public String getMensaje(){
         return (String) data.get("mensaje");
+    }
+
+    public Object getResultados(){
+        return data.get("resultado");
     }
 }

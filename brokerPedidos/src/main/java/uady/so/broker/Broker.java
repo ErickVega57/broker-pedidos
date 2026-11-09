@@ -89,6 +89,8 @@ public class Broker {
                     // invocamos el servicio y esperamos la respuesta.
                     Respuesta respuestaServicio = invocar(servicio, (SolicitudBrokerPedidos) solicitudBroker);
 
+                    System.out.println("REVISION:\n" + solicitudJsonAdapter.serializar(respuestaServicio));
+
                     // creamos la respuesta para el cliente segun la respuesta del servicio
                     if(respuestaServicio.getEstado().equals("OK")){
                         respuesta = Respuesta.respuestaOK(respuestaServicio);
@@ -105,7 +107,6 @@ public class Broker {
             }
             // volvemos String formato Json la respuesta.
             String jsonRespuesta = solicitudJsonAdapter.serializar(respuesta);
-
             // enviamos al socket(cliente o broker) conectado la respuesta
             salida.write(jsonRespuesta + "\n");
             salida.flush();
@@ -248,7 +249,7 @@ public class Broker {
 
             // recibimos la respuesta
             String jsonRecibido = entrada.readLine();
-            System.out.println("respuesta " + jsonRecibido);
+            System.out.println("respuesta =" + jsonRecibido);
 
             // devolvemos la respuesta como objeto.
             return solicitudJsonAdapter.deserializarRespuesta(jsonRecibido);

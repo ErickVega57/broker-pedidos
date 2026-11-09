@@ -44,8 +44,10 @@ public class PedidoRepositoryCSV implements PedidoRepository {
 
         try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
             String linea;
+            int id = 1;
             while ((linea = br.readLine()) != null) {
-                pedidos.add(deserializarPedido(linea));
+                pedidos.add(deserializarPedido(linea, id));
+                id++;
             }
         }catch (IOException e){
             throw new RuntimeException("Error al leer el archivo");
@@ -82,7 +84,7 @@ public class PedidoRepositoryCSV implements PedidoRepository {
         return sb.toString();
     }
 
-    private Pedido deserializarPedido(String linea) {
+    private Pedido deserializarPedido(String linea, int id) {
         String[] partes = linea.split(";");
         List<Producto> productos = new ArrayList<>();
 
@@ -108,6 +110,7 @@ public class PedidoRepositoryCSV implements PedidoRepository {
         p.setImpuestos(Double.parseDouble(partes[3]));
         p.setTotal(Double.parseDouble(partes[4]));
         p.setEstado(EstadoPedido.valueOf(partes[5]));
+        p.setId(id);
 
         return p;
     }

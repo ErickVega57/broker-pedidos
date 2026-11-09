@@ -1,5 +1,6 @@
 package uady.so.cliente;
 
+import uady.so.mensajes.respuesta.Respuesta;
 import uady.so.mensajes.solicitud.SolicitudBroker;
 import uady.so.mensajes.solicitud.SolicitudBrokerPedidos;
 import uady.so.modelo.Pedido;
@@ -47,5 +48,11 @@ public class Cliente {
 
         System.out.println("RESPUESTA DEL REGISTRO");
         System.out.println(respuestaRegistrar);
+
+        SolicitudBrokerPedidos listarTodos = SolicitudBrokerPedidos.listarPedidos();
+        String pedidosJson = proxy.invocar(listarTodos);
+        System.out.println(pedidosJson);
+
+
     }
 }
