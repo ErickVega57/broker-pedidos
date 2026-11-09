@@ -29,7 +29,7 @@ public class AppConsultarPedidos {
         // se crea el proxy con el servicio implementado.
         ServidorProxy proxy = new ServidorProxy(
           "consultarPedido", hostBroker, puertoBroker,
-                "192.168.1.204", puertoServicio, consultarPedido
+                "localhost", puertoServicio, consultarPedido
         );
 
         proxy.iniciar();
