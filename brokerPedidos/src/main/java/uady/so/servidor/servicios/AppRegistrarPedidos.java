@@ -28,7 +28,7 @@ public class AppRegistrarPedidos {
         // se crea el proxy con el servicio implementado.
         ServidorProxy proxy = new ServidorProxy(
                 "registrarPedido", hostBroker, puertoBroker,
-                "192.168.1.204", puertoServicio, registrarPedido
+                "localhost", puertoServicio, registrarPedido
         );
         proxy.iniciar();
     }
