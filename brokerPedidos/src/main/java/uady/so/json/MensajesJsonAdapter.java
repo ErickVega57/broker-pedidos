@@ -43,6 +43,42 @@ public class MensajesJsonAdapter {
 
             if (resultadoElement.isJsonObject()) {
                 JsonObject resultado = resultadoElement.getAsJsonObject();
+
+                if (resultado.has("respuesta") && resultado.get("respuesta").isJsonArray()) {
+                    JsonArray arreglo = resultado.getAsJsonArray("respuesta");
+
+                    for (JsonElement pedido : arreglo) {
+                        if (pedido.isJsonObject()) {
+                            JsonObject p = pedido.getAsJsonObject();
+
+                            // 2. Corregimos la lectura del ID (ahora se lee desde 'p')
+                            if (p.has("id")) {
+                                p.addProperty("id", p.get("id").getAsInt());
+                            }
+
+                            // 3. Recorremos los productos
+                            if (p.has("productos") && p.get("productos").isJsonArray()) {
+                                JsonArray productos = p.getAsJsonArray("productos");
+
+                                for (JsonElement element : productos) {
+                                    if (element.isJsonObject()) {
+                                        JsonObject producto = element.getAsJsonObject();
+
+                                        // Forzamos cantidad a entero
+                                        if (producto.has("cantidad")) {
+                                            producto.addProperty("cantidad", producto.get("cantidad").getAsInt());
+                                        }
+
+                                        // Forzamos existencia a entero
+                                        if (producto.has("existencia")) {
+                                            producto.addProperty("existencia", producto.get("existencia").getAsInt());
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 
                 if (resultado.has("id")) {
                     resultado.addProperty("id", resultado.get("id").getAsInt());
