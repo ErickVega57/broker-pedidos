@@ -1,15 +1,13 @@
 package uady.so.cliente;
 
 import uady.so.json.MensajesJsonAdapter;
-import uady.so.mensajes.respuesta.Respuesta;
-import uady.so.mensajes.solicitud.Solicitud;
 import uady.so.mensajes.solicitud.SolicitudBroker;
 import uady.so.mensajes.solicitud.SolicitudBrokerPedidos;
-import uady.so.modelo.Pedido;
 
 import java.util.LinkedHashMap;
 
 public class Cliente {
+
     public static void main(String[] args) {
         String hostBroker = "localhost";
         int puertoBroker = 9000;
@@ -20,27 +18,19 @@ public class Cliente {
             hostBroker = partes[0];
             puertoBroker = Integer.parseInt(partes[1]);
         }
-        
-        // iniciamos el proxy creamos solicitudes, las enviamos al broker 
-        // y recibimos respuestas con el metodo invocar del proxy.
-        ClienteProxy proxy = new ClienteProxy(hostBroker, puertoBroker);
-        MensajesJsonAdapter mensajesJsonAdapter = new MensajesJsonAdapter();
 
-        //SolicitudBroker solicitudBroker = SolicitudBroker.SolicitudListarTodos();
-        //String jsonRespuesta = proxy.invocar(solicitudBroker);
-
-        //SolicitudBroker solicitudBroker1 = SolicitudBroker.SolicitudBuscar("registrar");
-        //String jsonRespuesta2 = proxy.invocar(solicitudBroker1);
-
-
-        System.out.println("PRUEBAS EXITOS");pruebasExitos(proxy, mensajesJsonAdapter);
+        //System.out.println("PRUEBAS EXITOS");pruebasExitos(proxy, mensajesJsonAdapter);
 
         //System.out.println("PRUEBAS ERRORES");pruebasErrores(proxy, mensajesJsonAdapter);
+        ClienteProxy proxy = new ClienteProxy(hostBroker, puertoBroker);
+        VistaCliente vista = new VistaCliente();
+        Cliente cliente = new Cliente(vista, proxy);
 
+        cliente.iniciar();
 
     }
 
-    public static void pruebasExitos(ClienteProxy proxy, MensajesJsonAdapter mensajesJsonAdapter ){
+    public void pruebasExitos(){
         SolicitudBrokerPedidos registrarPedido = SolicitudBrokerPedidos.registarPedido("Ana López");
         registrarPedido.agregarProducto(
                 "Producto A",
@@ -69,7 +59,7 @@ public class Cliente {
         System.out.println(mensajesJsonAdapter.formatear(respuestaListarPedidos));
 
     }
-    public static void pruebasErrores(ClienteProxy proxy, MensajesJsonAdapter mensajesJsonAdapter){
+    public void pruebasErrores(){
 
         SolicitudBroker servicioInexistente =
                 SolicitudBroker.SolicitudEjecutar("servicioInexistente", new LinkedHashMap<>());
@@ -102,4 +92,93 @@ public class Cliente {
         System.out.println(mensajesJsonAdapter.formatear(respuestaServicioInexistente));
 
     }
+
+    private final VistaCliente vista;
+    private final ClienteProxy proxy;
+    private final MensajesJsonAdapter mensajesJsonAdapter = new MensajesJsonAdapter();
+
+    Cliente(VistaCliente vistaCliente, ClienteProxy proxy){
+        this.vista = vistaCliente;
+        this.proxy = proxy;
+    }
+
+    private void ejecutarOpciones(int opcion){
+        switch (opcion) {
+            case 1:
+                vista.mostrarRespuesta(registrarPedido());
+                break;
+            case 2:
+                vista.mostrarRespuesta(consultarPedido());
+                break;
+            case 3:
+                vista.mostrarRespuesta(listarPedidos());
+                break;
+            case 4:
+                vista.mostrarRespuesta(buscar());
+                break;
+            case 5:
+                vista.mostrarRespuesta(listarTodos());
+                break;
+            case 6:
+                System.out.println("Cerrando el programa...");
+                break;
+            default:
+                System.out.println("Opción inválida. Intenta de nuevo.");
+        }
+    }
+
+    public void iniciar(){
+        int opcion;
+        do {
+            try{
+                opcion = vista.mostrarMenu();
+            } catch (NumberFormatException e) {
+                opcion = 0;
+            }
+            ejecutarOpciones(opcion);
+        }while(opcion != 6);
+    }
+
+    public String registrarPedido(){
+        try {
+
+            SolicitudBroker solicitudBroker = vista.registrarPedido();
+            return mensajesJsonAdapter.formatear(proxy.invocar(solicitudBroker));
+
+        }catch (Exception e){
+            return "Error al ingresar el pedido";
+        }
+    }
+    public String consultarPedido(){
+        try{
+
+            SolicitudBroker solicitudBroker = vista.consultarPedido();
+            return mensajesJsonAdapter.formatear(proxy.invocar(solicitudBroker));
+
+        } catch (Exception e) {
+            return "Ingrese un id válido";
+        }
+
+    }
+
+    public String listarPedidos(){
+        SolicitudBroker solicitudBroker = SolicitudBrokerPedidos.listarPedidos();
+        return mensajesJsonAdapter.formatear(proxy.invocar(solicitudBroker));
+    }
+
+    public String buscar(){
+        try {
+            String servicio = vista.buscarServicio();
+            SolicitudBroker solicitudBroker = SolicitudBroker.SolicitudBuscar(servicio);
+            return mensajesJsonAdapter.formatear(proxy.invocar(solicitudBroker));
+        } catch (Exception e) {
+            return "Error al buscar " + e.getMessage();
+        }
+    }
+
+    public String listarTodos(){
+        SolicitudBroker solicitudBroker = SolicitudBroker.SolicitudListarTodos();
+        return mensajesJsonAdapter.formatear(proxy.invocar(solicitudBroker));
+    }
+
 }
